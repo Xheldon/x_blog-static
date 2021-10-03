@@ -14,11 +14,11 @@
   font-size: 14px;
 }
 .sidebar-container h5 {
-  color: #a3a3a3;
+  color: #888888;
   padding-bottom: 1em;
 }
 .sidebar-container h5 a {
-  color: #a3a3a3 !important;
+  color: #888888 !important;
   text-decoration: none;
 }
 .sidebar-container a {
@@ -157,6 +157,7 @@
   padding: 18px 24px;
   bottom: 0px;
   opacity: 0;
+  z-index: 20;
 }
 @media (min-width: 640px) {
   .paper-snackbar {
@@ -217,7 +218,7 @@
   color: #000;
   text-transform: uppercase;
   border-radius: 3px;
-  outline-color: #a3a3a3;
+  outline-color: #888888;
 }
 .paper-button:hover {
   cursor: pointer;
@@ -267,7 +268,7 @@ button.paper-button {
   background-color: #fff;
 }
 .paper-button input[type="submit"] {
-  outline-color: #a3a3a3;
+  outline-color: #888888;
 }
 .paper-button.colored.raised-button input[type="submit"] {
   color: #fff;
@@ -787,6 +788,9 @@ samp {
 .postlist-container {
   margin-bottom: 15px;
 }
+.post-fullcontent .post-container {
+  padding-right: 0;
+}
 .post-container a {
   color: #428bca;
 }
@@ -909,7 +913,7 @@ samp {
   width: 100%;
 }
 .post-container .pager li > a > span {
-  color: #a3a3a3;
+  color: #888888;
   font-weight: normal;
   letter-spacing: 0.5px;
 }
@@ -1121,7 +1125,7 @@ samp {
 }
 .intro-header {
   background: no-repeat center center;
-  background-color: #a3a3a3;
+  background-color: #888888;
   background-attachment: scroll;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -1295,7 +1299,7 @@ samp {
 }
 .post-preview > .post-meta {
   font-family: 'Lora', 'Times New Roman', serif;
-  color: #a3a3a3;
+  color: #888888;
   font-size: 16px;
   font-style: italic;
   margin-top: 10px;
@@ -1325,7 +1329,7 @@ samp {
 }
 .post-content-preview {
   font-size: 13px;
-  color: #a3a3a3;
+  color: #888888;
 }
 @media only screen and (min-width: 768px) {
   .post-content-preview {
@@ -1435,7 +1439,7 @@ footer .copyright a:focus {
 .pager .disabled > a:hover,
 .pager .disabled > a:focus,
 .pager .disabled > span {
-  color: #a3a3a3;
+  color: #888888;
   background-color: #404040;
   cursor: not-allowed;
 }
