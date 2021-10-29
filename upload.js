@@ -4,16 +4,14 @@ const fs = require('fs');
 const staticFileDir = ['css', 'example-code', 'fonts', 'img', 'js', 'less', 'projects'];
 
 module.exports = async ({github, context, core}) => {
-    const {
-        COS_SECRET_ID,
-        COS_SECRET_KEY,
-        COS_BUCKET,
-        COS_REGION,
-    } = process.env
+    const COS_SECRET_ID = core.getInput('COS_SECRET_ID');
+    const COS_SECRET_KEY = core.getInput('COS_SECRET_KEY');
+    const COS_BUCKET = core.getInput('COS_BUCKET');
+    const COS_REGION = core.getInput('COS_REGION');
     // Note: 获取
     var cos = new COS({
-        SecretId: `AKIDta1C7lCOK0RcYEfqlQq1wc2C6k9JDrFN`,
-        SecretKey: `tWuCE1YqseBSUGm33nIYZKp56rNdePt7`
+        SecretId: COS_SECRET_ID,
+        SecretKey: COS_SECRET_KEY
     });
     // Note: action/github 中的 github.event.commits 对象中并不包含 added modifiy removed 等资源（shit！） https://docs.github.com/cn/actions/learn-github-actions/events-that-trigger-workflows#push
     //  API 发送接口看这个： https://docs.github.com/cn/rest/reference/repos#get-a-commit
@@ -81,8 +79,8 @@ module.exports = async ({github, context, core}) => {
         if (staticFileDir.some(dir => fileName.startsWith(dir))) {
             console.log('文件即将被上传:', fileName);
             addFiles.push({
-                Bucket: `blog-test-1254272402`,
-                Region: `ap-beijing`,
+                Bucket: COS_BUCKET,
+                Region: COS_REGION,
                 Key: fileName,
                 FilePath: fileName,
                 onTaskReady: () => {
@@ -134,8 +132,8 @@ module.exports = async ({github, context, core}) => {
     // Note: 执行删除
     if (removedList.length) {
         cos.deleteMultipleObject({
-            Bucket: `${COS_BUCKET}`,
-            Region: `${COS_REGION}`,
+            Bucket: COS_BUCKET,
+            Region: COS_REGION,
             Objects: removedFiles,
         }, function(err, data) {
             if (err) {
