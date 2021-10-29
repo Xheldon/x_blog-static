@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const staticFileDir = ['css', 'example-code', 'fonts', 'img', 'js', 'less', 'projects'];
 
-module.exports = ({github, context}) => {
+module.exports = async ({github, context, core}) => {
     const {
         COS_SECRET_ID,
         COS_SECRET_KEY,
@@ -16,18 +16,59 @@ module.exports = ({github, context}) => {
         SecretId: `${COS_SECRET_ID}`,
         SecretKey: `${COS_SECRET_KEY}`
     });
+    // Note: action/github 中的 github.event.commits 对象中并不包含 added modifiy removed 等资源（shit！） https://docs.github.com/cn/actions/learn-github-actions/events-that-trigger-workflows#push
+    //  API 发送接口看这个： https://docs.github.com/cn/rest/reference/repos#get-a-commit
+    //  所以需要手动发送请求获取 change，因此我用 compare 接口：https://docs.github.com/cn/rest/reference/repos#compare-two-commits
+    //  参考了这个人的 aciton： https://github.com/jitterbit/get-changed-files/blob/master/src/main.ts
+    //  不过该 API 已经废弃了，要使用这个接口： compareCommitsWithBasehead
+
+    const base = context.payload.before;
+    const head = context.payload.after;
+    console.log('之前的 hash:', base);
+    console.log('现在的 hash:', head);
+
+    const response = await github.rest.repos.compareCommitsWithBasehead({
+        base,
+        head,
+        owner: context.repo.owner,
+        repo: context.repo.repo
+    });
+    if (response.status !== 200) {
+        core.setFailed(
+          `The GitHub API for comparing the base and head commits for this ${context.eventName} event returned ${response.status}, expected 200. ` +
+            "Please submit an issue on this action's GitHub repo."
+        )
+    }
+    if (response.data.status !== 'ahead') {
+        core.setFailed(
+          `head commit 的 id 落后于 base commit，搞错了吧？`
+        )
+    }
+
+    const files = response.data.files;
     // Note: 从 push 事件中获取到相关文件变动信息，然后进行相应的上传和删除
     const _addAndModifyList = [];
     const _deleteList = [];
-    // console.log('github 参数:', github);
-    console.log('contex 参数:', context.payload.head_commit.added);
-    // console.log('procss 参数:', process.env);
-    // console.log('GITHUB_EVENT 参数:', GITHUB_EVENT);
-    return;
-    GITHUB_EVENT.commits.forEach((commit) => {
-        addAndModifyList.concat(commit.added).concat(commit.modified);
-        deleteList.concat(commit.removed);
-    });
+    const _ignored = [];
+    for (const file in files) {
+        const filename = file.filename;
+        switch (file.status) {
+            case 'added':
+            case 'modified':
+                _addAndModifyList.push(filename);
+                break;
+            case 'removed':
+                _deleteList.push(filename);
+                break;
+            default:
+                // Note: 还有一种 renamed 的不处理
+                _ignored.push({
+                    [file.status]: filename
+                });
+                break;
+        }
+    }
+    console.log('未处理的文件有:', _ignored);
     // Note: 去重
     const addAndModifyList = new Set(Array.from(_addAndModifyList));
     const deleteList = new Set(Array.from(deleteList));
