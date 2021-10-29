@@ -71,6 +71,8 @@ module.exports = async ({github, context, core}) => {
     console.log('重命名的文件有:', renamed);
 
     const ignored = [];
+    const addFiles = [];
+    const removedFiles = [];
     for (let fileName of addAndModifyList) {
         // Note: 只处理静态资源文件夹下的文件
         if (staticFileDir.some(dir => fileName.startsWith(dir))) {
@@ -95,7 +97,7 @@ module.exports = async ({github, context, core}) => {
     for (let fileName of removedList) {
         if (staticFileDir.some(dir => fileName.startsWith(dir))) {
             console.log('即将删除文件:', fileName);
-            removeFiles.push({
+            removedFiles.push({
                 Key: fileName
             });
         }
@@ -124,7 +126,7 @@ module.exports = async ({github, context, core}) => {
         cos.deleteMultipleObject({
             Bucket: `${COS_BUCKET}`,
             Region: `${COS_REGION}`,
-            Objects: removeFiles,
+            Objects: removedFiles,
         }, function(err, data) {
             if (err) {
                 console.log('删除过程出现错误:', err);
