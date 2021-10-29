@@ -19,7 +19,6 @@ module.exports = async ({github, context, core}) => {
         SecretId: COS_SECRET_ID,
         SecretKey: COS_SECRET_KEY
     });
-    console.log('shit:', shit);
     // Note: action/github 中的 github.event.commits 对象中并不包含 added modifiy removed 等资源（shit！） https://docs.github.com/cn/actions/learn-github-actions/events-that-trigger-workflows#push
     //  API 发送接口看这个： https://docs.github.com/cn/rest/reference/repos#get-a-commit
     //  所以需要手动发送请求获取 change，因此我用 compare 接口：https://docs.github.com/cn/rest/reference/repos#compare-two-commits
