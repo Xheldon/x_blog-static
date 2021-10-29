@@ -43,8 +43,9 @@ module.exports = async ({github, context, core}) => {
           `head commit 的 id 落后于 base commit，搞错了吧？`
         )
     }
-
+    console.log('响应:', response);
     const files = response.data.files;
+    console.log('全部文件:', files);
     // Note: 从 push 事件中获取到相关文件变动信息，然后进行相应的上传和删除
     const addAndModifyList = [];
     const removedList = [];
@@ -73,7 +74,7 @@ module.exports = async ({github, context, core}) => {
     console.log('移除的文件列表:', removedList);
 
     const addFiles = [];
-    for (let fileName of addAndModifyList.keys()) {
+    for (let fileName of addAndModifyList) {
         // Note: 只处理静态资源文件夹下的文件
         if (staticFileDir.some(dir => fileName.startsWith(dir))) {
             console.log('文件即将被上传:', fileName);
@@ -90,7 +91,7 @@ module.exports = async ({github, context, core}) => {
     }
 
     const removeFiles = [];
-    for (let fileName of removedList.keys()) {
+    for (let fileName of removedList) {
         if (staticFileDir.some(dir => fileName.startsWith(dir))) {
             console.log('即将删除文件:', fileName);
             removeFiles.push({
