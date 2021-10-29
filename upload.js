@@ -46,31 +46,29 @@ module.exports = async ({github, context, core}) => {
 
     const files = response.data.files;
     // Note: 从 push 事件中获取到相关文件变动信息，然后进行相应的上传和删除
-    const _addAndModifyList = [];
-    const _removedList = [];
-    const _ignored = [];
+    const addAndModifyList = [];
+    const removedList = [];
+    const ignored = [];
     for (const file in files) {
         const filename = file.filename;
         switch (file.status) {
             case 'added':
             case 'modified':
-                _addAndModifyList.push(filename);
+                addAndModifyList.push(filename);
                 break;
             case 'removed':
-                _removedList.push(filename);
+                removedList.push(filename);
                 break;
             default:
                 // Note: 还有一种 renamed 的不处理
-                _ignored.push({
+                ignored.push({
                     [file.status]: file
                 });
                 break;
         }
     }
-    console.log('未处理的文件有:', _ignored);
+    console.log('未处理的文件有:', ignored);
     // Note: 去重
-    const addAndModifyList = new Set(Array.from(_addAndModifyList));
-    const removedList = new Set(Array.from(_removedList));
     console.log('添加或修改的文件列表:', addAndModifyList);
     console.log('移除的文件列表:', removedList);
 
