@@ -43,14 +43,12 @@ module.exports = async ({github, context, core}) => {
           `head commit 的 id 落后于 base commit，搞错了吧？`
         )
     }
-    console.log('响应:', response);
     const files = response.data.files;
-    console.log('全部文件:', files);
     // Note: 从 push 事件中获取到相关文件变动信息，然后进行相应的上传和删除
     const addAndModifyList = [];
     const removedList = [];
     const ignored = [];
-    for (const file in files) {
+    for (const file of files) {
         const filename = file.filename;
         switch (file.status) {
             case 'added':
