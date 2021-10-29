@@ -30,7 +30,7 @@
 // responsive tables
 $(document).ready(function() {
     $("table").wrap("<div class='table-responsive'></div>");
-    $("table").addClass("table").addClass('table-hover').addClass('table-bordered');
+    $("table").addClass("table").addClass('table-bordered');
 });
 
 // responsive embed videos
