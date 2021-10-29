@@ -117,7 +117,7 @@ module.exports = async ({github, context, core}) => {
                 console.log('进度:' + percent + '%; 速度：' + speed + 'Mb/s;');
             },
             onFileFinish: function (err, data, options) {
-                console.log(options.Key + '上传' + (err ? ('失败:' + err) : '完成'));
+                console.log(options.Key + '上传' + (err ? ('失败:' + err.statusCode + err) : '完成'));
                 console.log('--------------------------------------------');
             },
         }, function (err, data) {
