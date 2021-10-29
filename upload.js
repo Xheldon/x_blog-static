@@ -4,11 +4,16 @@ const fs = require('fs');
 const staticFileDir = ['css', 'example-code', 'fonts', 'img', 'js', 'less', 'projects'];
 
 module.exports = async ({github, context, core}) => {
-    const COS_SECRET_ID = core.getInput('COS_SECRET_ID');
+    /* const COS_SECRET_ID = core.getInput('COS_SECRET_ID');
     const COS_SECRET_KEY = core.getInput('COS_SECRET_KEY');
     const COS_BUCKET = core.getInput('COS_BUCKET');
-    const COS_REGION = core.getInput('COS_REGION');
-    const shit = core.getInput('shit');
+    const COS_REGION = core.getInput('COS_REGION'); */
+    const {
+        COS_SECRET_ID,
+        COS_SECRET_KEY,
+        COS_BUCKET,
+        COS_REGION
+    } = process.env;
     // Note: 获取
     var cos = new COS({
         SecretId: COS_SECRET_ID,
