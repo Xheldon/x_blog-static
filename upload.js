@@ -82,6 +82,9 @@ module.exports = async ({github, context, core}) => {
                 Region: `${COS_REGION}`,
                 Key: fileName,
                 FilePath: fileName,
+                onTaskReady: () => {
+                    console.log(`准备开始上传:${fileName}`);
+                }
             });
         } else {
             ignored.push(fileName);
@@ -114,6 +117,12 @@ module.exports = async ({github, context, core}) => {
                 console.log(options.Key + '上传' + (err ? ('失败:' + err) : '完成'));
                 console.log('--------------------------------------------');
             },
+        }, function (err, data) {
+            if (err) {
+                console.log(`批量上传错误码: ${err.statusCode}, ${err}`);
+            } else {
+                console.log('批量上传完成:', data);
+            }
         });
     } else {
         console.log('本次没有需要上传的文件');
