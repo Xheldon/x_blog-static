@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const staticFileDir = ['css', 'example-code', 'fonts', 'img', 'js', 'less', 'projects'];
 
-module.exports = ({github, contex}) => {
+module.exports = ({github, context}) => {
     const {
         COS_SECRET_ID,
         COS_SECRET_KEY,
@@ -20,7 +20,7 @@ module.exports = ({github, contex}) => {
     const _addAndModifyList = [];
     const _deleteList = [];
     console.log('github 参数:', github);
-    console.log('contex 参数:', contex);
+    console.log('contex 参数:', context;
     console.log('procss 参数:', process.env);
     console.log('GITHUB_EVENT 参数:', GITHUB_EVENT);
 
