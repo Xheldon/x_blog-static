@@ -4,10 +4,6 @@ const fs = require('fs');
 const staticFileDir = ['css', 'example-code', 'fonts', 'img', 'js', 'less', 'projects'];
 
 module.exports = async ({github, context, core}) => {
-    /* const COS_SECRET_ID = core.getInput('COS_SECRET_ID');
-    const COS_SECRET_KEY = core.getInput('COS_SECRET_KEY');
-    const COS_BUCKET = core.getInput('COS_BUCKET');
-    const COS_REGION = core.getInput('COS_REGION'); */
     const {
         COS_SECRET_ID,
         COS_SECRET_KEY,
@@ -27,8 +23,8 @@ module.exports = async ({github, context, core}) => {
 
     const base = context.payload.before;
     const head = context.payload.after;
-    console.log('之前的 hash:', base);
-    console.log('现在的 hash:', head);
+    console.log('payload:', context.payload);
+    return;
 
     const response = await github.rest.repos.compareCommitsWithBasehead({
         basehead: `${base}...${head}`,
