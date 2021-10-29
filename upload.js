@@ -12,8 +12,8 @@ module.exports = async ({github, context, core}) => {
     } = process.env
     // Note: 获取
     var cos = new COS({
-        SecretId: `${COS_SECRET_ID}`,
-        SecretKey: `${COS_SECRET_KEY}`
+        SecretId: `AKIDta1C7lCOK0RcYEfqlQq1wc2C6k9JDrFN`,
+        SecretKey: `tWuCE1YqseBSUGm33nIYZKp56rNdePt7`
     });
     // Note: action/github 中的 github.event.commits 对象中并不包含 added modifiy removed 等资源（shit！） https://docs.github.com/cn/actions/learn-github-actions/events-that-trigger-workflows#push
     //  API 发送接口看这个： https://docs.github.com/cn/rest/reference/repos#get-a-commit
@@ -81,8 +81,8 @@ module.exports = async ({github, context, core}) => {
         if (staticFileDir.some(dir => fileName.startsWith(dir))) {
             console.log('文件即将被上传:', fileName);
             addFiles.push({
-                Bucket: `${COS_BUCKET}`,
-                Region: `${COS_REGION}`,
+                Bucket: `blog-test-1254272402`,
+                Region: `ap-beijing`,
                 Key: fileName,
                 FilePath: fileName,
                 onTaskReady: () => {
