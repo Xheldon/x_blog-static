@@ -58,6 +58,10 @@ module.exports = async ({github, context, core}) => {
             case 'removed':
                 removedList.push(filename);
                 break;
+            case 'renamed':
+                // Note: 重命名的，需要删了旧的，上传新的
+                addAndModifyList.push(filename);
+                removedList.push(file.previous_filename);
             default:
                 // Note: 还有一种 renamed 的不处理
                 renamed.push({
