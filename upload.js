@@ -9,7 +9,6 @@ module.exports = async ({github, context, core}) => {
         COS_SECRET_KEY,
         COS_BUCKET,
         COS_REGION,
-        GITHUB_EVENT,
     } = process.env
     // Note: 获取
     var cos = new COS({
