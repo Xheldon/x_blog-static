@@ -12,6 +12,10 @@ module.exports = ({github, contex, secrets}) => {
     // Note: 从 push 事件中获取到相关文件变动信息，然后进行相应的上传和删除
     const _addAndModifyList = [];
     const _deleteList = [];
+    console.log('github 参数:', github);
+    console.log('contex 参数:', contex);
+    console.log('secrets 参数:', secrets);
+
     github.event.commits.forEach((commit) => {
         addAndModifyList.concat(commit.added).concat(commit.modified);
         deleteList.concat(commit.removed);
