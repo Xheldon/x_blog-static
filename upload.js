@@ -82,9 +82,6 @@ module.exports = async ({github, context, core}) => {
                 Region: `${COS_REGION}`,
                 Key: fileName,
                 FilePath: fileName,
-                onProgress: function (processData) {
-                    console.log(JSON.stringify('进度:', processData.percent, processData.speed));
-                }
             });
         } else {
             ignored.push(fileName);
@@ -111,10 +108,11 @@ module.exports = async ({github, context, core}) => {
             onProgress: function (info) {
                 var percent = parseInt(info.percent * 10000) / 100;
                 var speed = parseInt(info.speed / 1024 / 1024 * 100) / 100;
-                console.log('进度：' + percent + '%; 速度：' + speed + 'Mb/s;');
+                console.log('进度:' + percent + '%; 速度：' + speed + 'Mb/s;');
             },
             onFileFinish: function (err, data, options) {
-                console.log(options.Key + '上传' + (err ? '失败' : '完成'));
+                console.log(options.Key + '上传' + (err ? ('失败:' + err) : '完成'));
+                console.log('--------------------------------------------');
             },
         });
     } else {
