@@ -20,7 +20,7 @@ module.exports = ({github, context}) => {
     const _addAndModifyList = [];
     const _deleteList = [];
     // console.log('github 参数:', github);
-    console.log('contex 参数:', context);
+    console.log('contex 参数:', context.payload.commits);
     // console.log('procss 参数:', process.env);
     // console.log('GITHUB_EVENT 参数:', GITHUB_EVENT);
     return;
