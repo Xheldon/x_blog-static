@@ -8,6 +8,7 @@ module.exports = async ({github, context, core}) => {
     const COS_SECRET_KEY = core.getInput('COS_SECRET_KEY');
     const COS_BUCKET = core.getInput('COS_BUCKET');
     const COS_REGION = core.getInput('COS_REGION');
+    const shit = core.getInput('shit');
     // Note: 获取
     var cos = new COS({
         SecretId: COS_SECRET_ID,

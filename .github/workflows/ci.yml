@@ -35,6 +35,7 @@ jobs:
           COS_SECRET_KEY: ${{secrets.COS_SECRET_KEY}}
           COS_BUCKET: ${{secrets.COS_BUCKET}}
           COS_REGION: ${{secrets.COS_REGION}}
+          shit: fuck
           script: |
             const script = require('./upload.js')
             await script({github, context, core})
