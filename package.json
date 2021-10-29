@@ -1,0 +1,25 @@
+
+   
+{
+    "name": "x_blog-static",
+    "version": "1.0.0",
+    "description": "",
+    "main": "upload.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/Xheldon/x_blog-static.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/Xheldon/x_blog-static/issues"
+    },
+    "homepage": "https://github.com/Xheldon/x_blog-static#readme",
+    "dependencies": {
+      "cos-nodejs-sdk-v5": "^2.10.6"
+    }
+  }
