@@ -21,10 +21,13 @@ module.exports = async ({github, context, core}) => {
     //  参考了这个人的 aciton： https://github.com/jitterbit/get-changed-files/blob/master/src/main.ts
     //  不过该 API 已经废弃了，要使用这个接口： compareCommitsWithBasehead
 
+    // Note: 如果 commit msg 中含有特定信息则不再继续
+    if (context.payload.head_commit.message.startsWith('NO')) {
+        console.log('本次任务终止');
+        return;
+    }
     const base = context.payload.before;
     const head = context.payload.after;
-    console.log('payload:', context.payload);
-    return;
 
     const response = await github.rest.repos.compareCommitsWithBasehead({
         basehead: `${base}...${head}`,
