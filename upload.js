@@ -3,20 +3,28 @@ const fs = require('fs');
 
 const staticFileDir = ['css', 'example-code', 'fonts', 'img', 'js', 'less', 'projects'];
 
-module.exports = ({github, contex, secrets}) => {
+module.exports = ({github, contex}) => {
+    const {
+        COS_SECRET_ID,
+        COS_SECRET_KEY,
+        COS_BUCKET,
+        COS_REGION,
+        GITHUB_EVENT,
+    } = process.env
     // Note: 获取
     var cos = new COS({
-        SecretId: `${secrets.COS_SECRET_ID}`,
-        SecretKey: `${secrets.COS_SECRET_KEY}`
+        SecretId: `${COS_SECRET_ID}`,
+        SecretKey: `${COS_SECRET_KEY}`
     });
     // Note: 从 push 事件中获取到相关文件变动信息，然后进行相应的上传和删除
     const _addAndModifyList = [];
     const _deleteList = [];
     console.log('github 参数:', github);
     console.log('contex 参数:', contex);
-    console.log('secrets 参数:', secrets);
+    console.log('procss 参数:', process.env);
+    console.log('GITHUB_EVENT 参数:', GITHUB_EVENT);
 
-    github.event.commits.forEach((commit) => {
+    GITHUB_EVENT.commits.forEach((commit) => {
         addAndModifyList.concat(commit.added).concat(commit.modified);
         deleteList.concat(commit.removed);
     });
@@ -32,8 +40,8 @@ module.exports = ({github, contex, secrets}) => {
         if (staticFileDir.some(dir => fileName.startsWith(dir))) {
             console.log('文件即将被上传:', fileName);
             addFiles.push({
-                Bucket: `${secrets.COS_BUCKET}`,
-                Region: `${secrets.COS_REGION}`,
+                Bucket: `${COS_BUCKET}`,
+                Region: `${COS_REGION}`,
                 Key: fileName,
                 FilePath: fileName,
                 onProgress: function (processData) {
@@ -69,8 +77,8 @@ module.exports = ({github, contex, secrets}) => {
 
     // Note: 执行删除
     cos.deleteMultipleObject({
-        Bucket: `${secrets.COS_BUCKET}`,
-        Region: `${secrets.COS_REGION}`,
+        Bucket: `${COS_BUCKET}`,
+        Region: `${COS_REGION}`,
         Objects: removeFiles,
     }, function(err, data) {
         if (err) {
