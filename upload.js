@@ -47,7 +47,7 @@ module.exports = async ({github, context, core}) => {
     const files = response.data.files;
     // Note: 从 push 事件中获取到相关文件变动信息，然后进行相应的上传和删除
     const _addAndModifyList = [];
-    const _deleteList = [];
+    const _removedList = [];
     const _ignored = [];
     for (const file in files) {
         const filename = file.filename;
@@ -57,12 +57,12 @@ module.exports = async ({github, context, core}) => {
                 _addAndModifyList.push(filename);
                 break;
             case 'removed':
-                _deleteList.push(filename);
+                _removedList.push(filename);
                 break;
             default:
                 // Note: 还有一种 renamed 的不处理
                 _ignored.push({
-                    [file.status]: filename
+                    [file.status]: file
                 });
                 break;
         }
@@ -70,9 +70,9 @@ module.exports = async ({github, context, core}) => {
     console.log('未处理的文件有:', _ignored);
     // Note: 去重
     const addAndModifyList = new Set(Array.from(_addAndModifyList));
-    const deleteList = new Set(Array.from(deleteList));
+    const removedList = new Set(Array.from(_removedList));
     console.log('添加或修改的文件列表:', addAndModifyList);
-    console.log('移除的文件列表:', deleteList);
+    console.log('移除的文件列表:', removedList);
 
     const addFiles = [];
     for (let fileName of addAndModifyList.keys()) {
@@ -92,7 +92,7 @@ module.exports = async ({github, context, core}) => {
     }
 
     const removeFiles = [];
-    for (let fileName of deleteList.keys()) {
+    for (let fileName of removedList.keys()) {
         if (staticFileDir.some(dir => fileName.startsWith(dir))) {
             console.log('即将删除文件:', fileName);
             removeFiles.push({
