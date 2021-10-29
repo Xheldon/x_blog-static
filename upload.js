@@ -28,8 +28,7 @@ module.exports = async ({github, context, core}) => {
     console.log('现在的 hash:', head);
 
     const response = await github.rest.repos.compareCommitsWithBasehead({
-        base,
-        head,
+        basehead: `${base}...${head}`,
         owner: context.repo.owner,
         repo: context.repo.repo
     });
