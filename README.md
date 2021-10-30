@@ -1,5 +1,8 @@
 # x_blog-static
-The static resource of x_blog blog: https://xheldon.com
+The static resource of x_blog blog: 
+
+* 国际站点 (global): https://www.xheldon.com
+* 中国大陆站点 (china): https://www.xheldon.cn
 
 
 # 版权声明

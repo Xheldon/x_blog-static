@@ -65,10 +65,7 @@ module.exports = async ({github, context, core}) => {
                 addAndModifyList.push(filename);
                 removedList.push(file.previous_filename);
             default:
-                // Note: 还有一种 renamed 的不处理
-                renamed.push({
-                    [file.status]: file
-                });
+                console.log(`特殊文件状态:${file.status}:`, file);
                 break;
         }
     }
