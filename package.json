@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Xheldon/x_blog-static#readme",
   "dependencies": {
-    "cos-nodejs-sdk-v5": "^2.10.6"
+    "cos-nodejs-sdk-v5": "^2.10.6",
+    "tencentcloud-sdk-nodejs": "^4.0.227"
   }
 }

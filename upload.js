@@ -1,19 +1,23 @@
 const COS = require('cos-nodejs-sdk-v5');
-const fs = require('fs');
+const tencentcloud = require('tencentcloud-sdk-nodejs');
 
-const staticFileDir = ['css', 'example-code', 'fonts', 'img', 'js', 'less', 'projects'];
+const staticFileDir = [
+    'css',
+    'example-code',
+    'fonts',
+    'img',
+    'js',
+    'less',
+    'projects',
+];
 
-module.exports = async ({github, context, core}) => {
-    const {
-        COS_SECRET_ID,
-        COS_SECRET_KEY,
-        COS_BUCKET,
-        COS_REGION
-    } = process.env;
+module.exports = async ({ github, context, core }) => {
+    const { COS_SECRET_ID, COS_SECRET_KEY, COS_BUCKET, COS_REGION } =
+        process.env;
     // Note: 获取
     var cos = new COS({
         SecretId: COS_SECRET_ID,
-        SecretKey: COS_SECRET_KEY
+        SecretKey: COS_SECRET_KEY,
     });
     // Note: action/github 中的 github.event.commits 对象中并不包含 added modifiy removed 等资源（shit！） https://docs.github.com/cn/actions/learn-github-actions/events-that-trigger-workflows#push
     //  API 发送接口看这个： https://docs.github.com/cn/rest/reference/repos#get-a-commit
@@ -32,18 +36,16 @@ module.exports = async ({github, context, core}) => {
     const response = await github.rest.repos.compareCommitsWithBasehead({
         basehead: `${base}...${head}`,
         owner: context.repo.owner,
-        repo: context.repo.repo
+        repo: context.repo.repo,
     });
     if (response.status !== 200) {
         core.setFailed(
-          `The GitHub API for comparing the base and head commits for this ${context.eventName} event returned ${response.status}, expected 200. ` +
-            "Please submit an issue on this action's GitHub repo."
-        )
+            `The GitHub API for comparing the base and head commits for this ${context.eventName} event returned ${response.status}, expected 200. ` +
+                "Please submit an issue on this action's GitHub repo."
+        );
     }
     if (response.data.status !== 'ahead') {
-        core.setFailed(
-          `head commit 的 id 落后于 base commit，搞错了吧？`
-        )
+        core.setFailed(`head commit 的 id 落后于 base commit，搞错了吧？`);
     }
     const files = response.data.files;
     // Note: 从 push 事件中获取到相关文件变动信息，然后进行相应的上传和删除
@@ -78,7 +80,7 @@ module.exports = async ({github, context, core}) => {
     const removedFiles = [];
     for (let fileName of addAndModifyList) {
         // Note: 只处理静态资源文件夹下的文件
-        if (staticFileDir.some(dir => fileName.startsWith(dir))) {
+        if (staticFileDir.some((dir) => fileName.startsWith(dir))) {
             console.log('文件即将被上传:', fileName);
             addFiles.push({
                 Bucket: COS_BUCKET,
@@ -87,7 +89,7 @@ module.exports = async ({github, context, core}) => {
                 FilePath: fileName,
                 onTaskReady: () => {
                     console.log(`准备开始上传:${fileName}`);
-                }
+                },
             });
         } else {
             ignored.push(fileName);
@@ -98,53 +100,101 @@ module.exports = async ({github, context, core}) => {
     }
 
     for (let fileName of removedList) {
-        if (staticFileDir.some(dir => fileName.startsWith(dir))) {
+        if (staticFileDir.some((dir) => fileName.startsWith(dir))) {
             console.log('即将删除文件:', fileName);
             removedFiles.push({
-                Key: fileName
+                Key: fileName,
             });
         }
     }
 
     // Note: 执行上传
     if (addAndModifyList.length) {
-        cos.uploadFiles({
-            files: addFiles,
-            SliceSize: 1024 * 1024 * 10,    /* 设置大于10MB采用分块上传 */
-            onProgress: function (info) {
-                var percent = parseInt(info.percent * 10000) / 100;
-                var speed = parseInt(info.speed / 1024 / 1024 * 100) / 100;
-                console.log('进度:' + percent + '%; 速度：' + speed + 'Mb/s;');
+        cos.uploadFiles(
+            {
+                files: addFiles,
+                SliceSize: 1024 * 1024 * 10 /* 设置大于10MB采用分块上传 */,
+                onProgress: function (info) {
+                    var percent = parseInt(info.percent * 10000) / 100;
+                    var speed =
+                        parseInt((info.speed / 1024 / 1024) * 100) / 100;
+                    console.log(
+                        '进度:' + percent + '%; 速度：' + speed + 'Mb/s;'
+                    );
+                },
+                onFileFinish: function (err, data, options) {
+                    console.log(
+                        options.Key +
+                            '上传' +
+                            (err ? '失败:' + err.statusCode + err : '完成')
+                    );
+                    console.log('--------------------------------------------');
+                },
             },
-            onFileFinish: function (err, data, options) {
-                console.log(options.Key + '上传' + (err ? ('失败:' + err.statusCode + err) : '完成'));
-                console.log('--------------------------------------------');
-            },
-        }, function (err, data) {
-            if (err) {
-                console.log(`批量上传错误码: ${err.statusCode}, ${err}`);
-            } else {
-                console.log('批量上传完成:', data);
+            function (err, data) {
+                if (err) {
+                    console.log(`批量上传错误码: ${err.statusCode}, ${err}`);
+                } else {
+                    console.log('批量上传完成:', data);
+                }
             }
-        });
+        );
     } else {
         console.log('本次没有需要上传的文件');
     }
-    
+
     // Note: 执行删除
     if (removedList.length) {
-        cos.deleteMultipleObject({
-            Bucket: COS_BUCKET,
-            Region: COS_REGION,
-            Objects: removedFiles,
-        }, function(err, data) {
-            if (err) {
-                console.log('删除过程出现错误:', err);
-            } else {
-                console.log('删除结果:', data);
+        cos.deleteMultipleObject(
+            {
+                Bucket: COS_BUCKET,
+                Region: COS_REGION,
+                Objects: removedFiles,
+            },
+            function (err, data) {
+                if (err) {
+                    console.log('删除过程出现错误:', err);
+                } else {
+                    console.log('删除结果:', data);
+                }
             }
-        });
+        );
     } else {
         console.log('本次没有需要删除的文件');
     }
-}
+    console.log('----------------上传完成，开始刷新 cdn url------------');
+    const CdnClient = tencentcloud.cdn.v20180606.Client;
+    const clientConfig = {
+        credential: {
+            secretId: COS_SECRET_ID,
+            secretKey: COS_SECRET_KEY,
+        },
+        region: '',
+        profile: {
+            httpProfile: {
+                endpoint: 'cdn.tencentcloudapi.com',
+            },
+        },
+    };
+    const client = new CdnClient(clientConfig);
+    // Note: 需要刷新的 url 地址
+    const refreshList = addAndModifyList.map((fileName) => {
+        return `https://static.xheldon.cn/${fileName}`;
+    });
+    if (refreshList.length) {
+        console.log('CDN 刷新文件列表:', refreshList);
+        const params = {
+            Urls: refreshList,
+        };
+        client.PurgeUrlsCache(params).then(
+            (data) => {
+                console.log('刷新成功:', data);
+            },
+            (err) => {
+                console.error('刷新失败:', err);
+            }
+        );
+    } else {
+        console.log('本次无需 CDN 刷新');
+    }
+};
