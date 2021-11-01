@@ -51,7 +51,7 @@ module.exports = async ({ github, context, core }) => {
     // Note: 从 push 事件中获取到相关文件变动信息，然后进行相应的上传和删除
     const addAndModifyList = [];
     const removedList = [];
-    const renamed = [];
+    const renamedList = [];
     for (const file of files) {
         const filename = file.filename;
         switch (file.status) {
@@ -66,30 +66,36 @@ module.exports = async ({ github, context, core }) => {
                 // Note: 重命名的，需要删了旧的，上传新的
                 addAndModifyList.push(filename);
                 removedList.push(file.previous_filename);
+                renamedList.push({
+                    before: file.previous_filename,
+                    after: filename
+                });
             default:
                 console.log(`特殊文件状态:${file.status}:`, file);
                 break;
         }
     }
-    console.log('添加或修改的文件列表:', addAndModifyList);
-    console.log('移除的文件列表:', removedList);
-    console.log('重命名的文件有:', renamed);
-
+    if (addAndModifyList.length) {
+        console.log('添加或修改的文件列表:', addAndModifyList);
+    }
+    if (removedList.length) {
+        console.log('移除的文件列表:', removedList);
+    }
+    if (renamedList.length) {
+        console.log('重命名的文件有:', renamedList);
+    }
+console.log('--------------------------------------------');
     const ignored = [];
     const addFiles = [];
     const removedFiles = [];
     for (let fileName of addAndModifyList) {
         // Note: 只处理静态资源文件夹下的文件
         if (staticFileDir.some((dir) => fileName.startsWith(dir))) {
-            console.log('文件即将被上传:', fileName);
             addFiles.push({
                 Bucket: COS_BUCKET,
                 Region: COS_REGION,
                 Key: fileName,
-                FilePath: fileName,
-                onTaskReady: () => {
-                    console.log(`准备开始上传:${fileName}`);
-                },
+                FilePath: fileName
             });
         } else {
             ignored.push(fileName);
