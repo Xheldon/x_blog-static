@@ -135,7 +135,44 @@ module.exports = async ({ github, context, core }) => {
                 if (err) {
                     console.log(`批量上传错误码: ${err.statusCode}, ${err}`);
                 } else {
-                    console.log('批量上传完成:', data);
+                    console.log('批量上传完成:', data.options, data.data);
+                    console.log(
+                        '----------------上传完成，开始刷新 cdn url------------'
+                    );
+                    const CdnClient = tencentcloud.cdn.v20180606.Client;
+                    const clientConfig = {
+                        credential: {
+                            secretId: COS_SECRET_ID,
+                            secretKey: COS_SECRET_KEY,
+                        },
+                        region: '',
+                        profile: {
+                            httpProfile: {
+                                endpoint: 'cdn.tencentcloudapi.com',
+                            },
+                        },
+                    };
+                    const client = new CdnClient(clientConfig);
+                    // Note: 需要刷新的 url 地址
+                    const refreshList = addAndModifyList.map((fileName) => {
+                        return `https://static.xheldon.cn/${fileName}`;
+                    });
+                    if (refreshList.length) {
+                        console.log('CDN 刷新文件列表:', refreshList);
+                        const params = {
+                            Urls: refreshList,
+                        };
+                        client.PurgeUrlsCache(params).then(
+                            (data) => {
+                                console.log('刷新成功:', data);
+                            },
+                            (err) => {
+                                console.error('刷新失败:', err);
+                            }
+                        );
+                    } else {
+                        console.log('本次无需 CDN 刷新');
+                    }
                 }
             }
         );
@@ -161,40 +198,5 @@ module.exports = async ({ github, context, core }) => {
         );
     } else {
         console.log('本次没有需要删除的文件');
-    }
-    console.log('----------------上传完成，开始刷新 cdn url------------');
-    const CdnClient = tencentcloud.cdn.v20180606.Client;
-    const clientConfig = {
-        credential: {
-            secretId: COS_SECRET_ID,
-            secretKey: COS_SECRET_KEY,
-        },
-        region: '',
-        profile: {
-            httpProfile: {
-                endpoint: 'cdn.tencentcloudapi.com',
-            },
-        },
-    };
-    const client = new CdnClient(clientConfig);
-    // Note: 需要刷新的 url 地址
-    const refreshList = addAndModifyList.map((fileName) => {
-        return `https://static.xheldon.cn/${fileName}`;
-    });
-    if (refreshList.length) {
-        console.log('CDN 刷新文件列表:', refreshList);
-        const params = {
-            Urls: refreshList,
-        };
-        client.PurgeUrlsCache(params).then(
-            (data) => {
-                console.log('刷新成功:', data);
-            },
-            (err) => {
-                console.error('刷新失败:', err);
-            }
-        );
-    } else {
-        console.log('本次无需 CDN 刷新');
     }
 };
