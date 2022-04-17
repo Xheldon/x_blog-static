@@ -1137,3 +1137,45 @@ img::-moz-selection {
 .no-scroll {
   overflow-y: hidden;
 }
+
+// Note: 暗黑模式处理
+.switch-mode {
+  position: fixed;
+  left: 30px;
+  bottom: 30px;
+  cursor: pointer;
+  // .fa-circle {
+  //   transition: color 5000ms;
+  // }
+  &#light-mode {
+    .fa-circle {
+      color: black;
+    }
+  }
+}
+html {
+  transition: filter 500ms;
+}
+img, header.intro-header, .switch-mode {
+  transition: filter 500ms;
+}
+html, html.light {
+  #dark-mode {
+    display: block;
+  }
+  #light-mode {
+    display: none;
+  }
+}
+html.dark {
+  filter: invert(1) hue-rotate(180deg);
+  #dark-mode {
+    display: none;
+  }
+  #light-mode {
+    display: block;
+  }
+  img, header.intro-header, .switch-mode {
+    filter: invert(1) hue-rotate(180deg);
+  }
+}
