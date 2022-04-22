@@ -190,6 +190,16 @@ samp {
       color: @brand-primary;
     }
   }
+  p a::after {
+    content: ''; // Note: 这是个链接符号
+    font-family: anchorjs-icons;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    padding-left: 0.2em;
+    position: relative;
+    display: inline-block;
+  }
   h1,
   h2,
   h3,
