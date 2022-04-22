@@ -736,6 +736,8 @@ blockquote {
   font-style: italic;
   font-size: 0.95em;
   margin: 20px 0 20px;
+  padding: 2px 10px;
+  border-left: 7px solid #EEE;
 }
 blockquote p {
   margin: 0;
@@ -1723,4 +1725,43 @@ img::-moz-selection {
 }
 .no-scroll {
   overflow-y: hidden;
+}
+.switch-mode {
+  position: fixed;
+  left: 30px;
+  bottom: 30px;
+  cursor: pointer;
+}
+.switch-mode#light-mode .fa-circle {
+  color: black;
+}
+html {
+  transition: filter 500ms;
+}
+img,
+header.intro-header,
+.switch-mode {
+  transition: filter 500ms;
+}
+html #dark-mode,
+html.light #dark-mode {
+  display: block;
+}
+html #light-mode,
+html.light #light-mode {
+  display: none;
+}
+html.dark {
+  filter: invert(1) hue-rotate(180deg);
+}
+html.dark #dark-mode {
+  display: none;
+}
+html.dark #light-mode {
+  display: block;
+}
+html.dark img,
+html.dark header.intro-header,
+html.dark .switch-mode {
+  filter: invert(1) hue-rotate(180deg);
 }
