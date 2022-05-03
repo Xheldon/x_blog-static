@@ -814,6 +814,16 @@ samp {
 .post-container a:focus {
   color: #428bca;
 }
+.post-container p a::after {
+  content: '';
+  font-family: anchorjs-icons;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  padding-left: 0.2em;
+  position: relative;
+  display: inline-block;
+}
 .post-container h1,
 .post-container h2,
 .post-container h3,
