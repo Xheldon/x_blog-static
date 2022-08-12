@@ -1189,3 +1189,16 @@ html.dark {
     filter: invert(1) hue-rotate(180deg);
   }
 }
+// 给图片添加说明
+p[caption] {
+  position: relative;
+}
+p[caption]::after {
+  content: attr(caption);
+  text-align: center;
+  display: block;
+  font-size: 12px;
+  bottom: -20px;
+  position: absolute;
+  width: 100%;
+}

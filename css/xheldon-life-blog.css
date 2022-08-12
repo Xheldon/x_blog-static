@@ -1775,3 +1775,15 @@ html.dark header.intro-header,
 html.dark .switch-mode {
   filter: invert(1) hue-rotate(180deg);
 }
+p[caption] {
+  position: relative;
+}
+p[caption]::after {
+  content: attr(caption);
+  text-align: center;
+  display: block;
+  font-size: 12px;
+  bottom: -20px;
+  position: absolute;
+  width: 100%;
+}
