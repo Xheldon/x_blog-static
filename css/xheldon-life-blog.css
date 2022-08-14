@@ -814,7 +814,7 @@ samp {
 .post-container a:focus {
   color: #428bca;
 }
-.post-container p a::after {
+.post-container p a:not(.link-bookmark)::after {
   content: '';
   font-family: anchorjs-icons;
   font-style: normal;
@@ -1786,4 +1786,68 @@ p[caption]::after {
   bottom: -20px;
   position: absolute;
   width: 100%;
+}
+a.link-bookmark {
+  height: 72px;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  background: #f4f4f4;
+  align-items: center;
+}
+a.link-bookmark:hover,
+a.link-bookmark:active,
+a.link-bookmark:visited {
+  text-decoration: none;
+  color: unset;
+}
+a.link-bookmark > span:first-child {
+  margin: 8px;
+  width: 56px;
+  height: 56px;
+  box-sizing: content-box;
+  background-color: #dfdfdf;
+}
+a.link-bookmark > span:first-child img {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+a.link-bookmark > span:first-child img[src=""] {
+  display: none;
+}
+a.link-bookmark > span:last-child {
+  flex-direction: column;
+  display: flex;
+  flex-grow: 1;
+  width: calc(100% - 72px);
+  flex-shrink: 1;
+  padding: 8px 8px 8px 4px;
+  height: 72px;
+  justify-content: space-around;
+}
+a.link-bookmark > span > span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: block;
+  line-height: 1.2;
+  font-weight: 400;
+}
+a.link-bookmark > span > span:nth-child(1) {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(31, 34, 37, 0.9);
+}
+a.link-bookmark > span > span:nth-child(2) {
+  font-size: 15px;
+  opacity: 0.66;
+  color: rgba(31, 34, 37, 0.9);
+}
+a.link-bookmark > span > span:nth-child(3) {
+  font-size: 14px;
+  color: #a1a2a3;
 }
