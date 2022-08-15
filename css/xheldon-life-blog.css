@@ -514,6 +514,8 @@ pre.highlight {
 .highlighter-rouge .highlight {
   margin-bottom: 10px;
   border-radius: 6px;
+  max-height: 500px;
+  overflow: scroll;
 }
 .highlighter-rouge .highlight pre {
   font-size: 14px;
