@@ -3,7 +3,9 @@
 @import "sidebar.less";
 @import "side-catalog.less";
 @import "snackbar.less";
-@import "highlight.less";
+@import "highlight.config.less";
+@import "solarized.light.less";
+// @import "highlight.less";
 @import "search.less";
 
 // Global Components
@@ -257,16 +259,11 @@ samp {
   }
   ul,
   ol {
-    margin-bottom: 40px;
-    @media screen and (max-width: 768px) {
-      & {
-        padding-left: 30px;
-      }
-    }
-    @media screen and (max-width: 500px) {
-      & {
-        padding-left: 20px;
-      }
+    margin-bottom: 20px;
+    padding: 0;
+    margin-left: 20px;
+    > * {
+      padding-left: 10px;
     }
   }
   ol ol,
