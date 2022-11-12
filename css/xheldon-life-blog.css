@@ -8,6 +8,14 @@
     padding-right: 5%;
   }
 } */
+@media (max-width: 991px) {
+  .twitter-timeline-hr {
+    display: none!important;
+  }
+  .twitter-timeline {
+    display: none!important;
+  }
+}
 .sidebar-container {
   color: #bfbfbf;
   font-size: 14px;
@@ -1291,7 +1299,7 @@ samp {
 }
 footer {
   font-size: 20px;
-  padding: 50px 0 10px;
+  padding: 25px 0 10px;
 }
 footer .list-inline {
   margin: 0;
