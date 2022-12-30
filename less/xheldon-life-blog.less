@@ -1269,3 +1269,13 @@ a.link-bookmark > span > span:nth-child(3) {
   font-size: 14px;
   color: rgb(161, 162, 163);
 }
+
+// 稍微调大一点编辑器窗口，现在的较小导致 Youtube 默认不加载高清视频
+@media (min-width: 1200px) {
+  .container {
+    width: unset;
+    // 如果浏览器窗口能超过 1200px，那么显示器的分辨率一定大于 1440，因此限制其最宽为 1440px 即可
+    // 此时可以保证 Youtube 的视频为最大 1080HD 分辨率
+    max-width: 1440px;
+  }
+}

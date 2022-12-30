@@ -1782,3 +1782,9 @@ a.link-bookmark > span > span:nth-child(3) {
   font-size: 14px;
   color: #a1a2a3;
 }
+@media (min-width: 1200px) {
+  .container {
+    width: unset;
+    max-width: 1440px;
+  }
+}
