@@ -677,7 +677,10 @@ samp {
 // Post Preview Pages (Home Page)
 
 .post-preview {
-  > a {
+  .post-preview-thum {
+    margin-left: 10px;
+  }
+  > a, .post-content-desc > a {
     color: @gray-dark;
     &:hover,
     &:focus {
@@ -698,7 +701,7 @@ samp {
       margin-bottom: 10px;
     }
   }
-  > .post-meta {
+  .post-meta {
     .serif;
     color: @brand-gray;
     font-size: 16px;
@@ -716,7 +719,7 @@ samp {
     }
   }
   @media only screen and (min-width: 768px) {
-    > a {
+    > a, .post-content-desc > a {
       > .post-title {
         font-size: 26px;
         line-height: 1.3;
@@ -737,6 +740,8 @@ samp {
   font-size: 13px;
   // font-style: italic;
   color: @brand-gray;
+  display: flex;
+  align-items: center;
   // &:hover {
   //   color: @brand-primary;
   // }
@@ -1277,5 +1282,11 @@ a.link-bookmark > span > span:nth-child(3) {
     // 如果浏览器窗口能超过 1200px，那么显示器的分辨率一定大于 1440，因此限制其最宽为 1440px 即可
     // 此时可以保证 Youtube 的视频为最大 1080HD 分辨率
     max-width: 1440px;
+  }
+}
+
+@media (max-width: 624px) {
+  .post-preview-thum {
+    display: none;
   }
 }
