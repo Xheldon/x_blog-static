@@ -1713,6 +1713,7 @@ html.dark #light-mode {
   display: block;
 }
 html.dark img,
+html.dark iframe,
 html.dark header.intro-header,
 html.dark .switch-mode {
   filter: invert(1) hue-rotate(180deg);
