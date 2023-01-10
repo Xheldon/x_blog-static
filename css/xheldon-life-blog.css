@@ -1799,3 +1799,9 @@ a.link-bookmark > span > span:nth-child(3) {
     display: none;
   }
 }
+i.fa.fa-youtube-play.fa-stack-1x.fa-inverse::after {
+  content: '丷';
+  position: absolute;
+  left: 13px;
+  top: -6px;
+}
