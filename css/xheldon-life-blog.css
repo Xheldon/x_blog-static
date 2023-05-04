@@ -847,6 +847,7 @@ samp {
 }
 .post-container ul.task-list > li input {
   margin-right: 10px;
+  margin-left: -26px;
 }
 .post-container .pager li {
   width: 48%;
@@ -868,6 +869,16 @@ samp {
 .post-container .anchorjs-link {
   position: absolute;
   text-decoration: none !important;
+}
+.post-container .content-callout {
+  display: flex;
+  width: 100%;
+  border-radius: 3px;
+  background: #f1f1ef;
+  padding: 16px 16px 16px 12px;
+}
+.post-container .content-callout .content-callout-icon {
+  margin-right: 8px;
 }
 @media only screen and (max-width: 767px) {
   /**

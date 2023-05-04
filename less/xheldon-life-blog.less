@@ -292,6 +292,7 @@ samp {
     list-style: none;
     > li input {
       margin-right: 10px;
+      margin-left: -26px;
     }
   }
   // V1.6 Hux display title by default.
@@ -316,6 +317,16 @@ samp {
     // I can not understand this but this made anchor always in the same line as title
     position: absolute;
     text-decoration: none !important;
+  }
+  .content-callout {
+    display: flex;
+    width: 100%;
+    border-radius: 3px;
+    background: rgb(241, 241, 239);
+    padding: 16px 16px 16px 12px;
+    .content-callout-icon {
+      margin-right: 8px;
+    }
   }
 }
 
