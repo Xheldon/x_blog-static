@@ -324,6 +324,7 @@ samp {
     border-radius: 3px;
     background: rgb(241, 241, 239);
     padding: 16px 16px 16px 12px;
+    word-break: break-all;
     .content-callout-icon {
       margin-right: 8px;
     }
@@ -1235,6 +1236,18 @@ a.link-bookmark {
   display: flex;
   background: rgb(244,244,244);
   align-items: center;
+  [data-bookmark-img=""][data-bookmark-title] {
+    &::before {
+      content: attr(data-bookmark-title);
+      position: relative;
+      display: inline-block;
+      top: 50%;
+      left: 50%;
+      color: #fff;
+      transform: translateX(-50%) translateY(-50%);
+      font-size: 32px;
+    }
+  }
 }
 a.link-bookmark:link, a.link-bookmark:visited, a.link-bookmark:hover, a.link-bookmark:active {
   text-decoration: none;
@@ -1245,7 +1258,8 @@ a.link-bookmark > span:first-child {
   width: 56px;
   height: 56px;
   box-sizing: content-box;
-  background-color: rgb(223, 223, 223);
+  font-weight: bold;
+  background-color: #539ad7;
 }
 a.link-bookmark > span:first-child img {
   width: 100%;

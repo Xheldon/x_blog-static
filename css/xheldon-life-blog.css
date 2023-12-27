@@ -371,12 +371,13 @@ button.paper-button {
 /* Landscape phones and down */
 @media (max-width: 480px) {
   .highlighter-rouge .highlight {
-    margin-left: -15px;
-    margin-right: -15px;
     border-radius: 0px;
   }
   .highlighter-rouge .highlight td.rouge-gutter {
     width: 36px;
+  }
+  .highlighter-rouge .highlight .lineno {
+    overflow: hidden;
   }
   .highlighter-rouge .highlight table > tbody > tr > td > pre {
     padding: 14px 10px;
@@ -876,6 +877,7 @@ samp {
   border-radius: 3px;
   background: #f1f1ef;
   padding: 16px 16px 16px 12px;
+  word-break: break-all;
 }
 .post-container .content-callout .content-callout-icon {
   margin-right: 8px;
@@ -1743,6 +1745,16 @@ a.link-bookmark {
   background: #f4f4f4;
   align-items: center;
 }
+a.link-bookmark [data-bookmark-img=""][data-bookmark-title]::before {
+  content: attr(data-bookmark-title);
+  position: relative;
+  display: inline-block;
+  top: 50%;
+  left: 50%;
+  color: #fff;
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 32px;
+}
 a.link-bookmark:link,
 a.link-bookmark:visited,
 a.link-bookmark:hover,
@@ -1755,7 +1767,8 @@ a.link-bookmark > span:first-child {
   width: 56px;
   height: 56px;
   box-sizing: content-box;
-  background-color: #dfdfdf;
+  font-weight: bold;
+  background-color: #539ad7;
 }
 a.link-bookmark > span:first-child img {
   width: 100%;
